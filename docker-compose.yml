@@ -2,7 +2,17 @@ version: '3.2'
 
 services:
   redis:
-    image: redis
+    image: redis:alpine
+
+  db:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_DB=thenewboston
+      - POSTGRES_USER=thenewboston
+      - POSTGRES_PASSWORD=thenewboston
+      - C_FORCE_ROOT=true
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
 
   app:
     build:
@@ -12,6 +22,10 @@ services:
       - DJANGO_APPLICATION_ENVIRONMENT=local
       - NETWORK_SIGNING_KEY=e5e5fec0dcbbd8b0a76c67204823678d3f243de7a0a1042bb3ecf66285cd9fd4
       - REDIS_HOST=redis
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=thenewboston
+      - POSTGRES_USER=thenewboston
+      - POSTGRES_PASSWORD=thenewboston
     command: python3 -u /opt/project/manage.py runserver
     volumes:
       - .:/opt/project
@@ -19,9 +33,11 @@ services:
       - '8000:8000'
     links:
       - redis
+      - db
     depends_on:
       - redis
       - celery
+      - db
 
   celery:
     build:
@@ -38,3 +54,7 @@ services:
       - redis
     depends_on:
       - redis
+
+volumes:
+  postgresql-data:
+    driver: local

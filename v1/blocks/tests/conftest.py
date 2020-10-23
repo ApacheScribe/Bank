@@ -1,8 +1,10 @@
 import pytest
-from factory import Faker
+from faker import Faker
 from thenewboston.blocks.block import generate_block
 
 from ..factories.block import BlockFactory
+
+fake = Faker()
 
 
 @pytest.fixture
@@ -26,7 +28,7 @@ def block_data_unique_recipients(
                 'recipient': primary_validator.account_number
             },
             {
-                'amount': Faker('pyint').generate(),
+                'amount': fake.pyint(),
                 'recipient': self_configuration.account_number
             }
         ]

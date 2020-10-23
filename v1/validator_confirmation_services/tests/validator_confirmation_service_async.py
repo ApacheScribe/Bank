@@ -11,8 +11,8 @@ from v1.notifications.constants import VALIDATOR_CONFIRMATION_SERVICE_NOTIFICATI
 from ..consumers.validator_confirmation_service import ValidatorConfirmationServiceConsumer
 
 
+# @pytest.mark.django_db(transaction=True)
 @pytest.mark.asyncio
-@pytest.mark.django_db(transaction=True)
 async def test_validator_confirmation_service_post_async(
     client, validator, signing_key
 ):

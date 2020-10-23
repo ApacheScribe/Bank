@@ -1,7 +1,7 @@
 import pytest
 from django.conf import settings
 from django.core.management import call_command
-from factory import Faker
+from faker import Faker
 from pytest_django.migrations import DisableMigrations
 from thenewboston.accounts.manage import create_account
 from thenewboston.blocks.block import generate_block
@@ -12,6 +12,8 @@ from v1.accounts.factories.account import AccountFactory
 from v1.self_configurations.helpers.self_configuration import get_self_configuration
 from v1.utils.blocks import create_block_and_bank_transactions
 from v1.validators.factories.validator import ValidatorFactory
+
+fake = Faker()
 
 
 @pytest.fixture
@@ -54,7 +56,7 @@ def block_data(account_data, account, encoded_account_number, random_encoded_acc
                 'recipient': primary_validator.account_number
             },
             {
-                'amount': Faker('pyint').generate(),
+                'amount': fake.pyint(),
                 'recipient': random_encoded_account_number
             }
         ]
@@ -67,7 +69,7 @@ def client():
 
 
 @pytest.fixture(autouse=True)
-def enable_db_access_for_all_tests(db):
+def enable_db_access_for_all_tests(transactional_db):
     pass
 
 

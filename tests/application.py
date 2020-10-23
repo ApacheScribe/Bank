@@ -21,4 +21,5 @@ def test_style():
 
     style = pycodestyle.StyleGuide(ignore=['E501', 'W504'])
     result = style.check_files(['config/', 'v1/'])
+    print(result.total_errors)
     assert not result.total_errors
